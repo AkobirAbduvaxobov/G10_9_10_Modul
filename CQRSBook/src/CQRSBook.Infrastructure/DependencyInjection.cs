@@ -29,6 +29,11 @@ public static class DependencyInjection
         services.AddScoped<IBookWriteRepository, MongoBookWriteRepository>();
         services.AddScoped<IBookReadRepository, MongoBookReadRepository>();
 
+        //services.AddScoped<MongoBookWriteRepository>();
+        //services.AddScoped<MongoBookReadRepository>();
+        //services.AddScoped<BookReadRepository>();
+        //services.AddScoped<BookWriteRepository>();
+
         return services;
     }
 }

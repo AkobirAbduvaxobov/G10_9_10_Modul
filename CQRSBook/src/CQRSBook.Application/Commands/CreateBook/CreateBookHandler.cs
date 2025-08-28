@@ -7,9 +7,11 @@ namespace CQRSBook.Application.Commands.CreateBook;
 public class CreateBookHandler : IRequestHandler<CreateBookCommand, long>
 {
     private readonly IBookWriteRepository _writeRepo;
-    public CreateBookHandler(IBookWriteRepository repo)
+    private readonly IBookGRPCService _bookGRPCService;
+    public CreateBookHandler(IBookWriteRepository repo, IBookGRPCService bookGRPCService)
     {
         _writeRepo = repo;
+        _bookGRPCService = bookGRPCService;
     }
 
     public async Task<long> Handle(CreateBookCommand request, CancellationToken cancellationToken)
@@ -27,7 +29,8 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, long>
             Price = request.Price
         };
 
-        var bookId = await _writeRepo.AddAsync(entity);
+        //var bookId = await _writeRepo.AddAsync(entity);
+        var bookId = await _bookGRPCService.AddAsync(entity);
 
         return bookId;
     }

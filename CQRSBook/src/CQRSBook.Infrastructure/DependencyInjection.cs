@@ -1,4 +1,6 @@
-﻿using CQRSBook.Application.Interfaces;
+﻿using BookContracts;
+using CQRSBook.Application.Interfaces;
+using CQRSBook.Infrastructure.GRPCSide;
 using CQRSBook.Infrastructure.Persistence;
 using CQRSBook.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +30,12 @@ public static class DependencyInjection
         services.AddSingleton<IMongoDatabase>(mongoDatabase);
         services.AddScoped<IBookWriteRepository, MongoBookWriteRepository>();
         services.AddScoped<IBookReadRepository, MongoBookReadRepository>();
+        services.AddScoped<IBookGRPCService, BookGRPCService>();
+
+        services.AddGrpcClient<BookService.BookServiceClient>(o =>
+        {
+            o.Address = new Uri(configuration["Grpc:ServerAddress"]!);
+        });
 
         //services.AddScoped<MongoBookWriteRepository>();
         //services.AddScoped<MongoBookReadRepository>();

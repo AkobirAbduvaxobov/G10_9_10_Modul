@@ -1,6 +1,4 @@
-﻿using BookContracts;
-using CQRSBook.Application.Interfaces;
-using CQRSBook.Infrastructure.GRPCSide;
+﻿using CQRSBook.Application.Interfaces;
 using CQRSBook.Infrastructure.MessageBrokers;
 using CQRSBook.Infrastructure.Persistence;
 using CQRSBook.Infrastructure.Persistence.Repositories;
@@ -34,10 +32,10 @@ public static class DependencyInjection
         //services.AddScoped<IBookGRPCService, BookGRPCService>();
         services.AddScoped<IBookGRPCService, BookPublisherService>();
 
-        services.AddGrpcClient<BookService.BookServiceClient>(o =>
-        {
-            o.Address = new Uri(configuration["Grpc:ServerAddress"]!);
-        });
+        //services.AddGrpcClient<BookService.BookServiceClient>(o =>
+        //{
+        //    o.Address = new Uri(configuration["Grpc:ServerAddress"]!);
+        //});
 
         //services.AddScoped<MongoBookWriteRepository>();
         //services.AddScoped<MongoBookReadRepository>();

@@ -12,7 +12,7 @@ public class BookPublisherService : IBookGRPCService
 
     public BookPublisherService()
     {
-        _factory = new ConnectionFactory() { HostName = "localhost" };
+        _factory = new ConnectionFactory() { HostName = "host.docker.internal" };
     }
 
     public async Task<long> AddAsync(Book book)

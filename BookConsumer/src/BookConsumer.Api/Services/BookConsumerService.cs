@@ -17,7 +17,7 @@ public class BookConsumerService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var factory = new ConnectionFactory() { HostName = "localhost" };
+        var factory = new ConnectionFactory() { HostName = "host.docker.internal" };
         var connection = await factory.CreateConnectionAsync();
         var channel = await connection.CreateChannelAsync();
 
@@ -36,10 +36,26 @@ public class BookConsumerService : BackgroundService
             Console.WriteLine(message);
             var book = JsonSerializer.Deserialize<Book>(message);
 
+            var logDir = Path.Combine(Directory.GetCurrentDirectory(), "logs");
+            Directory.CreateDirectory(logDir); 
+
+            var filePath = Path.Combine(logDir, $"book_log{book.Title}.txt");
+
+
             if (book != null)
             {
                 Console.WriteLine($"Book saved: {book.Title} by {book.Author}");
             }
+            try
+            {
+                await File.WriteAllTextAsync(filePath, message);
+                Console.WriteLine(filePath);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
         };
 
         await channel.BasicConsumeAsync(queue: "book-queue",

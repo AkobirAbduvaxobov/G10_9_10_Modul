@@ -1,0 +1,1 @@
+{"BookId":0,"Title":"Harrypotr","Author":"Ayol kishi","ISBN":"string","Publisher":"string","PublishDate":"2025-09-06T07:52:03.895Z","Pages":0,"Genre":"string","Language":"string","Price":0}

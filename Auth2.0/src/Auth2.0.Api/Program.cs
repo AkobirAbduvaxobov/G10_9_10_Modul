@@ -22,6 +22,16 @@ public class Program
         builder.ConfigureDI();
         builder.ConfigureJwt();
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+        });
+
 
         var app = builder.Build();
 
@@ -36,6 +46,7 @@ public class Program
 
         app.UseAuthorization();
 
+        app.UseCors("AllowAll");
 
         app.MapControllers();
 

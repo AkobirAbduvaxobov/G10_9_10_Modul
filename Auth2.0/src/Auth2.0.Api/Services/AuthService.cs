@@ -27,7 +27,8 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
-            throw new Exception("User not fount");
+            await GoogleRegisterAsync(dto);
+            user = await _context.Users.FirstOrDefaultAsync(u => u.GoogleId == payload.Subject);
         }
 
         var userTokenDto = new UserTokenDto

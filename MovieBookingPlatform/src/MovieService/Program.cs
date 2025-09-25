@@ -1,4 +1,6 @@
 
+using MovieService.Configurations;
+
 namespace MovieService
 {
     public class Program
@@ -13,6 +15,9 @@ namespace MovieService
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.ConfigureDB();
+            builder.ConfigureDI();
 
             var app = builder.Build();
 

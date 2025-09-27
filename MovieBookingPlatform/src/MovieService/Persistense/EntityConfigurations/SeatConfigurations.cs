@@ -11,6 +11,5 @@ public class SeatConfigurations : IEntityTypeConfiguration<Seat>
         builder.ToTable("Seats");
         builder.HasKey(s => s.SeatId);
         builder.Property(s => s.SeatNumber).IsRequired(true);
-        builder.Property(s => s.IsVip).IsRequired(true);
     }
 }

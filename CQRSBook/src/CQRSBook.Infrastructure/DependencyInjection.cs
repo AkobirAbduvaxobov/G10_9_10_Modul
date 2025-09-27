@@ -20,15 +20,15 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
           options.UseSqlServer(sqlConnectionString));
 
-        //services.AddScoped<IBookReadRepository, BookReadRepository>();
-        //services.AddScoped<IBookWriteRepository, BookWriteRepository>();
+        services.AddScoped<IBookReadRepository, BookReadRepository>();
+        services.AddScoped<IBookWriteRepository, BookWriteRepository>();
 
         var mongoClient = new MongoClient(mongoConnectionString);
         var mongoDatabase = mongoClient.GetDatabase("CQRSBookDb");
 
         services.AddSingleton<IMongoDatabase>(mongoDatabase);
-        services.AddScoped<IBookWriteRepository, MongoBookWriteRepository>();
-        services.AddScoped<IBookReadRepository, MongoBookReadRepository>();
+        //services.AddScoped<IBookWriteRepository, MongoBookWriteRepository>();
+        //services.AddScoped<IBookReadRepository, MongoBookReadRepository>();
         //services.AddScoped<IBookGRPCService, BookGRPCService>();
         services.AddScoped<IBookGRPCService, BookPublisherService>();
 

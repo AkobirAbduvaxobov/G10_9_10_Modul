@@ -108,20 +108,24 @@ namespace MovieService.Persistense.Migrations
                     b.Property<long>("CinemaHallId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsVip")
+                    b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
                     b.Property<string>("Row")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SeatNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SeatNumber")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ShowtimeId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("SeatId");
 
                     b.HasIndex("CinemaHallId");
+
+                    b.HasIndex("ShowtimeId");
 
                     b.ToTable("Seats", (string)null);
                 });
@@ -137,7 +141,7 @@ namespace MovieService.Persistense.Migrations
                     b.Property<long>("CinemaHallId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("MaxPrice")
@@ -169,7 +173,15 @@ namespace MovieService.Persistense.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MovieService.Entities.Showtime", "Showtime")
+                        .WithMany("Seats")
+                        .HasForeignKey("ShowtimeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("CinemaHall");
+
+                    b.Navigation("Showtime");
                 });
 
             modelBuilder.Entity("MovieService.Entities.Showtime", b =>
@@ -201,6 +213,11 @@ namespace MovieService.Persistense.Migrations
             modelBuilder.Entity("MovieService.Entities.Movie", b =>
                 {
                     b.Navigation("Showtimes");
+                });
+
+            modelBuilder.Entity("MovieService.Entities.Showtime", b =>
+                {
+                    b.Navigation("Seats");
                 });
 #pragma warning restore 612, 618
         }

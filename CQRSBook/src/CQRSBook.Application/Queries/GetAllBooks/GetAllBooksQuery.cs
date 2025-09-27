@@ -18,8 +18,8 @@ public class GetAllBooksQuery : IRequestHandler<GetAllBooksHandler, ICollection<
     public async Task<ICollection<BookGetDto>> Handle(GetAllBooksHandler request, CancellationToken cancellationToken)
     {
         
-        //var books = await _readRepo.GetAllAsync();
-        var books = await _bookGRPCService.GetAllAsync();
+        var books = await _readRepo.GetAllAsync();
+        //var books = await _bookGRPCService.GetAllAsync();
         var bookDtos = books.Select(b => new BookGetDto
         {
             BookId = b.BookId,

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MovieService.Persistense.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreating : Migration
+    public partial class test1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,35 +50,13 @@ namespace MovieService.Persistense.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Seats",
-                columns: table => new
-                {
-                    SeatId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SeatNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Row = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsVip = table.Column<bool>(type: "bit", nullable: false),
-                    CinemaHallId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Seats", x => x.SeatId);
-                    table.ForeignKey(
-                        name: "FK_Seats_CinemaHalls_CinemaHallId",
-                        column: x => x.CinemaHallId,
-                        principalTable: "CinemaHalls",
-                        principalColumn: "CinemaHallId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Showtimes",
                 columns: table => new
                 {
                     ShowtimeId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MinPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     MaxPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     MovieId = table.Column<long>(type: "bigint", nullable: false),
@@ -101,10 +79,44 @@ namespace MovieService.Persistense.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Seats",
+                columns: table => new
+                {
+                    SeatId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SeatNumber = table.Column<int>(type: "int", nullable: false),
+                    Row = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    CinemaHallId = table.Column<long>(type: "bigint", nullable: false),
+                    ShowtimeId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Seats", x => x.SeatId);
+                    table.ForeignKey(
+                        name: "FK_Seats_CinemaHalls_CinemaHallId",
+                        column: x => x.CinemaHallId,
+                        principalTable: "CinemaHalls",
+                        principalColumn: "CinemaHallId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Seats_Showtimes_ShowtimeId",
+                        column: x => x.ShowtimeId,
+                        principalTable: "Showtimes",
+                        principalColumn: "ShowtimeId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Seats_CinemaHallId",
                 table: "Seats",
                 column: "CinemaHallId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seats_ShowtimeId",
+                table: "Seats",
+                column: "ShowtimeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Showtimes_CinemaHallId",

@@ -29,8 +29,8 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, long>
             Price = request.Price
         };
 
-        //var bookId = await _writeRepo.AddAsync(entity);
-        var bookId = await _bookGRPCService.AddAsync(entity);
+        var bookId = await _writeRepo.AddAsync(entity);
+        //var bookId = await _bookGRPCService.AddAsync(entity);
 
         return bookId;
     }

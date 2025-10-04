@@ -63,7 +63,11 @@ public class ShowtimeService : IShowtimeService
 
     public async Task<List<ShowtimeDto>> GetAllAsync()
     {
-        var showtimes = await _appDbContext.Showtimes.ToListAsync();
+        var showtimes = await _appDbContext.Showtimes
+                            .Include(s => s.Movie)
+                            .Include(s => s.CinemaHall)
+                            .ToListAsync();
+
 
         return showtimes.Select(s => new ShowtimeDto
         {
@@ -73,7 +77,9 @@ public class ShowtimeService : IShowtimeService
             MinPrice = s.MinPrice,
             MaxPrice = s.MaxPrice,
             MovieId = s.MovieId,
-            CinemaHallId = s.CinemaHallId
+            CinemaHallId = s.CinemaHallId,
+            MovieTitle = s.Movie.Title,
+            CinemaHallName = s.CinemaHall.Name
         }).ToList();
     }
 
